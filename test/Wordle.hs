@@ -6,24 +6,27 @@ startWordle = main
 main :: IO ()
 main = do
     putStrLn "Welcome to the command line version of Wordle in Haskell!"
-    wordleInit
+    wordleinit
 
-wordleInit :: IO ()
-wordleInit = do
+wordleinit :: IO ()
+wordleinit = do
     putStrLn "Type the number of the Wordle you want to do or read the rules by typing \"rules\"."
     l <- getLine
     if l == "rules"
         then showrules
-        else if read l <= length wordleList
-            then wordlechosen (read l)
-            else putStrLn ""
+        else wordlechosen (read l)
+
+showrules :: IO ()
+showrules = do
+    putStrLn "This commandline version of Wordle works just like the regular version, except you won't see colors but \"w\" (\"wrong\") instead of grey, \"y\" for yellow or \"r\" (\"right\") for green."
+    wordleinit
 
 wordlechosen :: Int -> IO ()
 wordlechosen typednumber = do
     putStrLn (append ["You have chosen Wordle ", show typednumber, ", start by typing your first guess or cancel simply by typing \"cancel\"."])
     l <- getLine
     if l == "cancel"
-        then wordleInit
+        then wordleinit
         else wordleplay (chooseWordle (read l))
 
 wordleplay :: WordlePair -> IO ()
@@ -43,7 +46,7 @@ wordleEnd haswon guesses wordle = do
     else putStrLn (append ["You lost! The wordle was: ", wordle])
     putStrLn "Your guesses were:"
     print guesses
-    wordleInit     
+    wordleinit     
 
 ------------------------------------------------------------------------
 
@@ -54,11 +57,6 @@ chooseWordle :: Int -> WordlePair
 chooseWordle n = (get (random n (length wordleList)) wordleList, [])
 
 type WordlePair = (String, [String])
-
-showrules :: IO ()
-showrules = do
-    putStrLn "This commandline version of Wordle works just like the regular version, except you won't see colors but \"w\" (\"wrong\") instead of grey, \"y\" for yellow or \"r\" (\"right\") for green."
-    wordleInit
 
 wordleList :: [String]
 wordleList = ["tests"]
