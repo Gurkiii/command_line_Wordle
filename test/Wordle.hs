@@ -47,8 +47,6 @@ wordleEnd haswon guesses wordle = do
 
 ------------------------------------------------------------------------
 
-
-
 reveal :: String -> String -> String
 reveal guess wordle = append (zipWith (\g w -> if g == w then "r " else (if g `elem` wordle then "y " else "w ")) guess wordle)
 
