@@ -10,10 +10,10 @@ main = do
 
 wordleinit :: IO ()                                 --main menu, starting a Wordle or displaying the rules
 wordleinit = do
-    putStrLn "\nType the number of the Wordle you want to do or read the rules by typing \"rules\"."
+    putStrLn "\nType the number of the Wordle you want to do or read the instructions by typing \"instructions\"."
     l <- getLine
-    if l == "rules"
-        then showrules
+    if l == "instructions"
+        then showinstructions
         else case readMaybe l :: Maybe Int of
             Just a -> wordlechosen a
             Nothing -> invalidinput
@@ -23,9 +23,9 @@ invalidinput = do
     putStrLn "Try again (probably a typo?)"
     wordleinit
 
-showrules :: IO ()
-showrules = do
-    putStrLn "\nThis command line version of Wordle works just like the regular version, except you won't see colors but \"w\" (\"wrong\") instead of grey, \"y\" for yellow or \"r\" (\"right\") for green. \n As of this version, the game will only check whether your guess has five characters, not if it's actually an English word (coming soon (tm)). \n If you made a typo, just type in a couple of characters until your \"guess\" is longer than five characters and hit enter."
+showinstructions :: IO ()
+showinstructions = do
+    putStrLn "\nThis command line version of Wordle works similar to the regular version. First and foremost, you'll need to choose yourself which Wordle to play, just type in a number when the game asks you to. Secondly, ou won't see colors but \"w\" (\"wrong\") instead of grey, \"y\" for yellow or \"r\" (\"right\") for green. \n As of this version, the game will only check whether your guess has five characters, not if it's actually an English word (coming soon (tm)). \n If you made a typo, just type in a couple of characters until your \"guess\" is longer than five characters and hit enter."
     wordleinit
 
 wordlechosen :: Int -> IO ()                        --starting the game or cancelling
@@ -73,8 +73,8 @@ notavalidword wp = do
 wordleEnd :: Bool -> [String] -> String -> IO ()    --ending of the game
 wordleEnd haswon guesses wordle = do
     if haswon
-        then putStrLn "You won!"
-        else putStrLn (append ["You lost! The wordle was: ", wordle])
+        then putStrLn "\nYou won!"
+        else putStrLn (append ["\nYou lost! The wordle was: ", wordle])
     putStrLn "Your guesses were:"
     putStrLn (append (map (\str -> append [str, "\n"]) guesses))    --making the guesses look nice
     wordleinit                                      --going back to the main menu for another Wordle
